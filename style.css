@@ -703,19 +703,20 @@ input:checked+.theme-slider:before {
 
 @media (max-width: 600px) {
     .theme-switch-container {
-        position: relative;
-        top: 0;
-        right: 0;
-        flex-direction: row;
-        width: 100px;
-        height: 44px;
-        margin: 0 auto 20px auto;
-        transform: scale(0.85);
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        flex-direction: column;
+        width: auto;
+        height: auto;
+        margin: 0;
+        transform: scale(0.8);
+        transform-origin: top right;
     }
 
     .theme-switch {
-        width: 44px;
-        height: 24px;
+        width: 24px;
+        height: 44px;
     }
 
     .theme-slider:before {
@@ -724,8 +725,7 @@ input:checked+.theme-slider:before {
     }
 
     input:checked+.theme-slider:before {
-        transform: translateX(20px);
-        transform: translateY(0px) translateX(20px);
+        transform: translateY(20px);
     }
 
     .glass-nav {
@@ -791,13 +791,15 @@ input:checked+.theme-slider:before {
     }
 
     .controls {
-        gap: 10px;
-        margin-top: 20px;
+        gap: 15px;
+        margin-top: 25px;
+        flex-wrap: wrap;
+        justify-content: center;
     }
 
     .control-btn {
-        width: 60px;
-        height: 60px;
+        width: 65px;
+        height: 65px;
     }
 }
 
