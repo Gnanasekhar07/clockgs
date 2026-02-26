@@ -361,3 +361,25 @@ function playAlarmSound() {
         console.warn("Web Audio API not supported", e);
     }
 }
+
+// ------------------------------
+// Responsive Theme Switch Placement
+// ------------------------------
+const themeSwitchContainer = document.querySelector('.theme-switch-container');
+const glassNav = document.querySelector('.glass-nav');
+const mainContainer = document.getElementById('main-container');
+
+function adjustThemeSwitch() {
+    if (window.innerWidth <= 600) {
+        if (themeSwitchContainer && glassNav && themeSwitchContainer.parentElement !== glassNav) {
+            glassNav.appendChild(themeSwitchContainer);
+        }
+    } else {
+        if (themeSwitchContainer && mainContainer && themeSwitchContainer.parentElement === glassNav) {
+            document.body.insertBefore(themeSwitchContainer, mainContainer);
+        }
+    }
+}
+
+window.addEventListener('resize', adjustThemeSwitch);
+adjustThemeSwitch(); // run once on load
