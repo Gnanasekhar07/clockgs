@@ -702,6 +702,13 @@ input:checked+.theme-slider:before {
 }
 
 @media (max-width: 600px) {
+    .theme-switch-container {
+        top: 15px;
+        right: 15px;
+        transform: scale(0.75);
+        transform-origin: top right;
+    }
+
     .glass-nav {
         margin-bottom: 20px;
         flex-wrap: wrap;
@@ -748,15 +755,15 @@ input:checked+.theme-slider:before {
     }
 
     .hour-hand {
-        height: 60px;
+        height: 48px;
     }
 
     .minute-hand {
-        height: 85px;
+        height: 68px;
     }
 
     .second-hand {
-        height: 100px;
+        height: 80px;
     }
 
     .number {
@@ -789,15 +796,15 @@ input:checked+.theme-slider:before {
     }
 
     .hour-hand {
-        height: 50px;
+        height: 40px;
     }
 
     .minute-hand {
-        height: 70px;
+        height: 55px;
     }
 
     .second-hand {
-        height: 80px;
+        height: 65px;
     }
 
     .number {
