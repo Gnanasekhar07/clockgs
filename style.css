@@ -1,0 +1,663 @@
+:root {
+    --bg-color: #f5f5f7;
+    --panel-bg: rgba(255, 255, 255, 0.7);
+    --panel-border: rgba(255, 255, 255, 0.5);
+    --panel-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+    --accent-clock: #007aff;
+    --accent-stopwatch: #ff3b30;
+    --accent-timer: #af52de;
+    --text-primary: #1d1d1f;
+    --text-secondary: #86868b;
+    --btn-bg: #ffffff;
+    --btn-hover: #f0f0f5;
+    --btn-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    --btn-active-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+body.dark-theme {
+    --bg-color: #1a1a1c;
+    --panel-bg: rgba(40, 40, 45, 0.7);
+    --panel-border: rgba(80, 80, 85, 0.5);
+    --panel-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    --accent-clock: #0a84ff;
+    --text-primary: #f5f5f7;
+    --text-secondary: #a1a1a6;
+    --btn-bg: #2c2c2e;
+    --btn-hover: #3a3a3c;
+    --btn-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    --btn-active-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.4);
+}
+
+body {
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    perspective: 1000px;
+    background-image: radial-gradient(circle at center, var(--bg-color) 0%, transparent 100%);
+    transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    perspective: 1000px;
+    background-image: radial-gradient(circle at center, #ffffff 0%, #f5f5f7 100%);
+}
+
+/* We removed the animated background orbs for a cleaner, minimalist look */
+.background-anim {
+    display: none;
+}
+
+/* Layout container */
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 1000px;
+    z-index: 10;
+    padding: 2rem;
+}
+
+/* Navigation */
+.glass-nav {
+    display: flex;
+    gap: 10px;
+    background: var(--panel-bg);
+    padding: 8px 16px;
+    border-radius: 30px;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--panel-border);
+    margin-bottom: 50px;
+    box-shadow: var(--btn-shadow);
+    z-index: 20;
+    transform: translateZ(30px);
+}
+
+.nav-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 500;
+    padding: 10px 20px;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.nav-btn i {
+    font-size: 1rem;
+}
+
+.nav-btn:hover {
+    color: var(--text-primary);
+    background: var(--btn-hover);
+}
+
+.nav-btn.active {
+    background: var(--btn-bg);
+    color: var(--text-primary);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+/* View switching */
+.view-container {
+    width: 100%;
+    position: relative;
+    height: 550px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.view {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    /* Crucial: prevent hidden tabs from intercepting clicks! */
+    transition: opacity 0.5s ease, visibility 0.5s ease, transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transform: scale(0.9) translateY(20px) rotateX(-5deg);
+}
+
+.view.active-view {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    /* Re-enable clicks only for active tab */
+    transform: scale(1) translateY(0) rotateX(0);
+    z-index: 10;
+}
+
+/* Neumorphic / Glassmorphic Panels */
+.scene {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.glass-panel {
+    background: var(--panel-bg);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    border-radius: 32px;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    box-shadow:
+        var(--panel-shadow),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+    padding: 3rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.1s ease-out;
+}
+
+.clock-3d {
+    width: 400px;
+    height: 400px;
+}
+
+.stopwatch-3d {
+    width: 450px;
+    min-height: 400px;
+}
+
+.timer-3d {
+    width: 400px;
+    height: 460px;
+}
+
+/* Subtle accent glow instead of harsh rings */
+.glow-ring {
+    display: none;
+}
+
+/* Digital Displays */
+.digital-face,
+.digital-display {
+    text-align: center;
+    transform: translateZ(40px);
+}
+
+.time-display,
+.stopwatch-display,
+.timer-display {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: 4.5rem;
+    font-weight: 300;
+    letter-spacing: -2px;
+    margin-bottom: 10px;
+    color: var(--text-primary);
+    font-variant-numeric: tabular-nums;
+}
+
+.stopwatch-display .ms {
+    font-size: 2rem;
+    color: var(--text-secondary);
+    font-weight: 400;
+}
+
+.date-display {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+    letter-spacing: 1px;
+    margin-bottom: 25px;
+}
+
+.location-display {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background: rgba(0, 0, 0, 0.04);
+    padding: 6px 14px;
+    border-radius: 20px;
+}
+
+/* Minimalist Analog Face */
+.analog-face {
+    position: relative;
+    width: 260px;
+    height: 260px;
+    border-radius: 50%;
+    background: #ffffff;
+    box-shadow:
+        inset 0 2px 10px rgba(0, 0, 0, 0.05),
+        0 10px 20px rgba(0, 0, 0, 0.05);
+    transform: translateZ(30px);
+    margin-bottom: 20px;
+}
+
+.center-dot {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--text-primary);
+    transform: translate(-50%, -50%);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+    z-index: 10;
+}
+
+.hand {
+    position: absolute;
+    bottom: 50%;
+    left: 50%;
+    transform-origin: bottom center;
+    border-radius: 10px;
+    z-index: 5;
+}
+
+.hour-hand {
+    width: 6px;
+    height: 75px;
+    background: var(--text-primary);
+    margin-left: -3px;
+}
+
+.minute-hand {
+    width: 4px;
+    height: 100px;
+    background: var(--text-secondary);
+    margin-left: -2px;
+}
+
+.second-hand {
+    width: 2px;
+    height: 115px;
+    background: var(--accent-clock);
+    margin-left: -1px;
+}
+
+/* Hide helper */
+.hidden {
+    display: none !important;
+}
+
+/* Accessible, Tactile Controls */
+.controls {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.control-btn {
+    border: none;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s ease;
+    background: var(--btn-bg);
+    color: var(--text-primary);
+    box-shadow: var(--btn-shadow);
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    outline: none;
+}
+
+/* Solid tactile press effect */
+.control-btn:active {
+    transform: scale(0.92) translateY(2px);
+    box-shadow: var(--btn-active-shadow);
+    background: var(--btn-hover);
+}
+
+.start-btn {
+    color: #34c759;
+}
+
+.stop-btn {
+    color: #ff3b30;
+}
+
+.reset-btn {
+    color: var(--text-secondary);
+}
+
+.lap-btn {
+    color: var(--text-primary);
+}
+
+/* Remove button text for cleaner UI */
+.control-btn {
+    color: transparent;
+    position: relative;
+}
+
+.control-btn i {
+    color: var(--text-secondary);
+    font-size: 1.4rem;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: color 0.2s;
+}
+
+.start-btn i {
+    color: #34c759;
+}
+
+.stop-btn i {
+    color: #ff3b30;
+}
+
+.control-btn:active i {
+    transform: translate(-50%, -45%);
+    /* Slight shift down on press */
+}
+
+/* Laps */
+.laps-container {
+    width: 100%;
+    margin-top: 25px;
+    max-height: 140px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 0 10px;
+}
+
+.laps-container::-webkit-scrollbar {
+    width: 4px;
+}
+
+.laps-container::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+}
+
+.lap-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    font-family: -apple-system, sans-serif;
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    font-variant-numeric: tabular-nums;
+    animation: fadeIn 0.3s ease forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Timer Specific Extras */
+.timer-input-group {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.input-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.input-col label {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.input-col input {
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+    color: var(--text-primary);
+    font-family: -apple-system, sans-serif;
+    font-weight: 300;
+    font-size: 3.5rem;
+    width: 80px;
+    text-align: center;
+    padding: 5px;
+    outline: none;
+    transition: border-color 0.3s;
+    border-radius: 0;
+}
+
+.input-col input:focus {
+    border-bottom-color: var(--accent-timer);
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.colon {
+    font-size: 3rem;
+    font-weight: 300;
+    color: var(--text-secondary);
+    margin-top: 15px;
+}
+
+/* Minimal SVG Progress Timer */
+.timer-progress {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) translateZ(10px);
+    width: 320px;
+    height: 320px;
+    z-index: -1;
+    pointer-events: none;
+}
+
+.timer-progress circle {
+    fill: none;
+    stroke-width: 3;
+    transform-origin: center;
+    transform: rotate(-90deg);
+}
+
+.timer-progress .bg {
+    stroke: rgba(0, 0, 0, 0.04);
+}
+
+.timer-progress .progress {
+    stroke: var(--accent-timer);
+    stroke-dasharray: 565.48;
+    /* 2*pi*r  (r=90) */
+    stroke-dashoffset: 0;
+    transition: stroke-dashoffset 0.1s linear;
+}
+
+/* Face controls */
+.face-controls {
+    display: flex;
+    gap: 15px;
+    margin-top: 25px;
+    transform: translateZ(20px);
+}
+
+.toggle-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    padding: 8px 16px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.toggle-btn:hover {
+    color: var(--text-primary);
+}
+
+/* Vertical Theme Switch in Top Right */
+.theme-switch-container {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    z-index: 50;
+    background: var(--panel-bg);
+    padding: 15px 10px;
+    border-radius: 30px;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--panel-border);
+    box-shadow: var(--btn-shadow);
+    transition: all 0.5s ease;
+}
+
+.theme-switch-container i {
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+    transition: color 0.3s ease;
+}
+
+.icon-sun {
+    color: #f59e0b;
+    /* Sun color */
+}
+
+body.dark-theme .icon-sun {
+    color: var(--text-secondary);
+    /* Dim sun in dark mode */
+}
+
+body.dark-theme .icon-moon {
+    color: #60a5fa;
+    /* Moon color */
+}
+
+.theme-switch {
+    position: relative;
+    display: inline-block;
+    width: 24px;
+    height: 44px;
+}
+
+.theme-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.theme-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--btn-bg);
+    transition: .4s;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--panel-border);
+}
+
+.theme-slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 2px;
+    top: 2px;
+    background-color: var(--text-secondary);
+    transition: .4s;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+input:checked+.theme-slider:before {
+    transform: translateY(20px);
+    background-color: #60a5fa;
+}
+
+.theme-slider.round {
+    border-radius: 24px;
+}
+
+.theme-slider.round:before {
+    border-radius: 50%;
+}
+
+
+@media (max-width: 600px) {
+
+    .time-display,
+    .stopwatch-display,
+    .timer-display {
+        font-size: 3rem;
+    }
+
+    .clock-3d,
+    .stopwatch-3d,
+    .timer-3d {
+        width: 90vw;
+        padding: 2rem;
+    }
+
+    .input-col input {
+        width: 60px;
+        font-size: 2.5rem;
+    }
+
+    .timer-progress {
+        width: 280px;
+        height: 280px;
+    }
+}

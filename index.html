@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChronoSphere - 3D Chronograph</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Poppins:wght@300;400;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="background-anim">
+        <div class="orb orb1"></div>
+        <div class="orb orb2"></div>
+        <div class="orb orb3"></div>
+    </div>
+
+    <!-- Theme Switch -->
+    <div class="theme-switch-container">
+        <i class="fa-solid fa-sun icon-sun"></i>
+        <label class="theme-switch">
+            <input type="checkbox" id="theme-toggle">
+            <span class="theme-slider round"></span>
+        </label>
+        <i class="fa-solid fa-moon icon-moon"></i>
+    </div>
+
+    <main class="container" id="main-container">
+
+        <nav class="glass-nav">
+            <button class="nav-btn active" data-target="clock-view">
+                <i class="fa-solid fa-clock"></i> Clock
+            </button>
+            <button class="nav-btn" data-target="stopwatch-view">
+                <i class="fa-solid fa-stopwatch"></i> Stopwatch
+            </button>
+            <button class="nav-btn" data-target="timer-view">
+                <i class="fa-solid fa-hourglass-start"></i> Timer
+            </button>
+        </nav>
+
+        <div class="view-container">
+            <!-- CLOCK VIEW -->
+            <section id="clock-view" class="view active-view">
+                <div class="scene">
+                    <div class="clock-3d glass-panel" id="clock-3d-element">
+                        <div class="glow-ring"></div>
+                        <div class="analog-face hidden">
+                            <div class="center-dot"></div>
+                            <div class="hand hour-hand" id="hour-hand"></div>
+                            <div class="hand minute-hand" id="minute-hand"></div>
+                            <div class="hand second-hand" id="second-hand"></div>
+                            <div class="ticks"></div>
+                        </div>
+                        <div class="digital-face">
+                            <div class="time-display" id="digital-time">00:00:00</div>
+                            <div class="date-display" id="digital-date">MON, JAN 01</div>
+                            <div class="location-display" id="location-display">
+                                <i class="fa-solid fa-location-dot"></i> <span>Detecting Location...</span>
+                            </div>
+                        </div>
+                        <div class="face-controls">
+                            <button class="toggle-btn" id="toggle-face"><i class="fa-solid fa-repeat"></i>
+                                Analog/Digital</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- STOPWATCH VIEW -->
+            <section id="stopwatch-view" class="view">
+                <div class="scene">
+                    <div class="stopwatch-3d glass-panel">
+                        <div class="glow-ring stopwatch-color"></div>
+                        <div class="digital-display stopwatch-display" id="stopwatch-display">00:00:00<span
+                                class="ms">.00</span></div>
+
+                        <div class="controls 3d-controls">
+                            <button class="control-btn start-btn" id="sw-start"><i class="fa-solid fa-play"></i>
+                                Start</button>
+                            <button class="control-btn stop-btn" id="sw-stop"><i class="fa-solid fa-pause"></i>
+                                Stop</button>
+                            <button class="control-btn reset-btn" id="sw-reset"><i class="fa-solid fa-rotate-left"></i>
+                                Reset</button>
+                            <button class="control-btn lap-btn" id="sw-lap"><i class="fa-solid fa-flag"></i>
+                                Lap</button>
+                        </div>
+                        <div class="laps-container" id="laps-list">
+                            <!-- Laps will be injected here -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TIMER VIEW -->
+            <section id="timer-view" class="view">
+                <div class="scene">
+                    <div class="timer-3d glass-panel">
+                        <svg class="timer-progress" viewBox="0 0 200 200">
+                            <circle class="bg" cx="100" cy="100" r="90"></circle>
+                            <circle class="progress" id="timer-ring" cx="100" cy="100" r="90"></circle>
+                        </svg>
+                        <div class="glow-ring timer-color"></div>
+
+                        <div class="timer-input-group" id="timer-input-group">
+                            <div class="input-col">
+                                <label>H</label>
+                                <input type="number" id="timer-h" value="00" min="0" max="99"
+                                    onblur="this.value = this.value.padStart(2, '0')">
+                            </div>
+                            <span class="colon">:</span>
+                            <div class="input-col">
+                                <label>M</label>
+                                <input type="number" id="timer-m" value="05" min="0" max="59"
+                                    onblur="this.value = this.value.padStart(2, '0')">
+                            </div>
+                            <span class="colon">:</span>
+                            <div class="input-col">
+                                <label>S</label>
+                                <input type="number" id="timer-s" value="00" min="0" max="59"
+                                    onblur="this.value = this.value.padStart(2, '0')">
+                            </div>
+                        </div>
+
+                        <div class="digital-display timer-display hidden" id="timer-display">00:05:00</div>
+
+                        <div class="controls 3d-controls">
+                            <button class="control-btn start-btn" id="tm-start"><i class="fa-solid fa-play"></i>
+                                Start</button>
+                            <button class="control-btn stop-btn" id="tm-pause"><i class="fa-solid fa-pause"></i>
+                                Pause</button>
+                            <button class="control-btn reset-btn" id="tm-reset"><i class="fa-solid fa-xmark"></i>
+                                Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
