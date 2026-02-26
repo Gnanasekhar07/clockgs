@@ -72,12 +72,26 @@ const themeToggle = document.getElementById('theme-toggle');
 // Build analog ticks
 const ticksContainer = document.querySelector('.ticks');
 if (ticksContainer) {
-    for (let i = 0; i < 60; i++) {
-        let tick = document.createElement('div');
-        tick.className = 'tick';
-        tick.style.transform = `translateX(-50%) rotate(${i * 6}deg)`;
-        ticksContainer.appendChild(tick);
+    // Ticks removed by user request
+}
+
+// Build analog numbers
+if (analogFace) {
+    const numbersContainer = document.createElement('div');
+    numbersContainer.className = 'numbers';
+    for (let i = 1; i <= 12; i++) {
+        let num = document.createElement('div');
+        num.className = 'number';
+        num.style.transform = `rotate(${i * 30}deg)`;
+
+        let span = document.createElement('span');
+        span.textContent = i;
+        span.style.transform = `rotate(${-i * 30}deg)`;
+
+        num.appendChild(span);
+        numbersContainer.appendChild(num);
     }
+    analogFace.appendChild(numbersContainer);
 }
 
 let isAnalog = false;
